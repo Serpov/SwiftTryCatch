@@ -32,26 +32,28 @@
 /**
  Provides try catch functionality for swift by wrapping around Objective-C
  */
-+(void)try:(void (^)())try catch:(void (^)(NSException *))catch finally:(void (^)())finally {
++(void)try:(void (^)(void))try catch:(void (^)(NSException *))catch finally:(void (^)(void))finally{
     @try {
-        if (try != NULL) try();
+        try ? try() : nil;
     }
+    
     @catch (NSException *exception) {
-        if (catch != NULL) catch(exception);
+        catch ? catch(exception) : nil;
     }
     @finally {
-        if (finally != NULL) finally();
+        finally ? finally() : nil;
     }
 }
 
 + (void)throwString:(NSString*)s
 {
-	@throw [NSException exceptionWithName:s reason:s userInfo:nil];
+    @throw [NSException exceptionWithName:s reason:s userInfo:nil];
 }
 
 + (void)throwException:(NSException*)e
 {
-	@throw e;
+    @throw e;
 }
 
 @end
+
